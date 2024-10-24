@@ -1,7 +1,5 @@
 "use client";
 
-import { useState } from "react";
-
 interface CheckBoxProps {
   checked: boolean;
   onChange?: (checked: boolean) => void;
@@ -27,7 +25,7 @@ export default function CheckBox({
         type="checkbox"
         checked={checked}
         onChange={toggleCheckbox}
-        className="h-4 w-4 p-0.5 text-blue-600 border-gray-500 rounded focus:ring-blue-500"
+        className="h-4 w-4 p-0.5 rounded accent-babypink-500"
       />
       {label && <label className="text-gray-950 text-label-xs">{label}</label>}
     </div>

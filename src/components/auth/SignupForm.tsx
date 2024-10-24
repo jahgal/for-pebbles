@@ -88,6 +88,7 @@ export default function SignUpForm() {
         type="password"
         size="medium"
         label="비밀번호 확인"
+        placeholder="******"
         value={confrimPassword}
         onChange={(e) => setConfrimPassword(e.target.value)}
         error={error.confrim.length > 0}

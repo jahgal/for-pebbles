@@ -38,7 +38,7 @@ export default function Input({
   };
 
   const baseStyles =
-    "flex w-full px-4 border text-gray-900 focus:border-blue-500 placeholder:text-gray-300 placeholder:font-light transition-all duration-300";
+    "flex w-full px-4 border text-gray-900 placeholder:text-gray-500 placeholder:text-label-s transition-all duration-300";
 
   const sizeStyles = {
     small: "h-10 rounded-md text-body-s",
@@ -46,13 +46,19 @@ export default function Input({
     large: "h-14 rounded-lg text-body-l",
   };
 
-  const borderStyles = error ? "border-red-600" : "border-gray-600";
+  const borderStyles = error
+    ? "border-danger-50 focus:border-babypink-500"
+    : "border-gray-600 focus:border-babypink-500";
 
   const classes = `${className} ${borderStyles} ${baseStyles} ${sizeStyles[size]} flex items-center`;
 
   return (
     <div className="flex-col justify-start items-start gap-3 inline-flex relative">
-      {label && <label className="text-gray-900 text-label-s">{label}</label>}
+      {label && (
+        <label className="w-full text-gray-900 text-label-s pt-2">
+          {label}
+        </label>
+      )}
       <div className="relative w-full">
         <input
           className={`${classes} ${type === "password" ? "pr-10" : ""}`}
@@ -64,7 +70,7 @@ export default function Input({
           <button
             type="button"
             onClick={togglePasswordVisibility}
-            className="absolute right-2 top-1/2 transform -translate-y-1/2"
+            className="absolute right-4 top-1/2 transform -translate-y-1/2"
             aria-label={showPassword ? "Hide password" : "Show password"}
           >
             {showPassword ? (
@@ -76,8 +82,8 @@ export default function Input({
         )}
       </div>
       {error && errorMessage && (
-        <div className="text-red-500 text-label-s inline-flex gap-1 items-center">
-          <WarnIcon width="15px" fill="#ef4444" />
+        <div className="text-danger-50 text-label-s inline-flex gap-1 items-center">
+          <WarnIcon width="15px" fill="#EB003B" />
           {errorMessage}
         </div>
       )}

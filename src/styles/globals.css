@@ -9,6 +9,10 @@
   overflow: auto;
 }
 
+input {
+  @apply outline-none;
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;

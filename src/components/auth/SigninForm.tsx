@@ -37,7 +37,7 @@ export default function SignInForm() {
 
   return (
     <form onSubmit={handleSubmit} className="w-full">
-      <div className="flex flex-col gap-10">
+      <div className="flex flex-col gap-6">
         <Input
           type="email"
           size="medium"
@@ -67,11 +67,11 @@ export default function SignInForm() {
           비밀번호 재설정
         </div>
       </div>
-      <div className="flex flex-col gap-10">
+      <div>
         <Button type="submit" size="medium">
           <span>로그인</span>
         </Button>
-        <div className="flex items-center cursor-default">
+        <div className="flex items-center cursor-default my-10 max-sm:my-8">
           <Divider />
           <span className="text-gray-300 px-4 break-keep">또는</span>
           <Divider />
