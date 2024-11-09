@@ -12,7 +12,7 @@ export default function AccountPrompt({
   to,
 }: AccountPromptProps) {
   return (
-    <div className="w-full text-center mt-3 max-sm:text-label-xs">
+    <div className="w-full text-center max-sm:text-label-xs">
       <span className="text-gray-500 cursor-default font-light">
         {question}
       </span>{" "}

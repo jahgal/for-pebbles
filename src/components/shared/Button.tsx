@@ -2,37 +2,47 @@
 
 import React from "react";
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "contained" | "outlined" | "text" | "kakao";
+interface ButtonProps
+  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "className"> {
+  variant?: "contained" | "outlined" | "text";
   size?: "xsmall" | "small" | "medium" | "large" | "xlarge";
-  color?: "primary" | "second";
+  color?: "purple" | "red" | "orange" | "blue";
+  classNames?: string;
   children: React.ReactElement;
 }
 
 export default function Button({
   variant = "contained",
   size = "medium",
-  color = "primary",
+  color = "purple",
+  classNames = "",
   children,
   ...props
 }: ButtonProps) {
   const baseStyles =
-    "w-full rounded focus:outline-none transition-all duration-300";
+    "w-full rounded-md focus:outline-none transition-all duration-300";
 
   const variantStyles = {
-    contained:
-      color === "primary"
-        ? "bg-babypink-500 text-white hover:bg-babypink-600"
-        : "bg-blue-500 text-gray-0 hover:bg-blue-600",
-    outlined:
-      color === "primary"
-        ? "border border-babypink-500 text-babypink-500 hover:bg-babypink-50"
-        : "border border-blue-500 text-blue-500 hover:bg-blue-50",
-    text:
-      color === "primary"
-        ? "text-babypink-500 hover:bg-babypink-50"
-        : "text-gray-950 hover:bg-blue-50",
-    kakao: `bg-kakao-bg text-kakao-text`,
+    contained: {
+      purple: "bg-sparkPurple-500 text-white hover:bg-sparkPurple-600",
+      red: "bg-loveRed-500 text-white hover:bg-loveRed-600",
+      orange: "bg-happyOrange-500 text-white hover:bg-happyOrange-600",
+      blue: "bg-coolBlue-500 text-white hover:bg-coolBlue-600",
+    },
+    outlined: {
+      purple:
+        "border border-sparkPurple-500 text-sparkPurple-500 hover:bg-sparkPurple-50",
+      red: "border border-loveRed-500 text-loveRed-500 hover:bg-loveRed-50",
+      orange:
+        "border border-happyOrange-500 text-happyOrange-500 hover:bg-happyOrange-50",
+      blue: "border border-coolBlue-500 text-coolBlue-500 hover:bg-coolBlue-50",
+    },
+    text: {
+      purple: "text-sparkPurple-500 hover:bg-sparkPurple-50",
+      red: "text-loveRed-500 hover:bg-loveRed-50",
+      orange: "text-happyOrange-500 hover:bg-happyOrange-50",
+      blue: "text-coolBlue-500 hover:bg-coolBlue-50",
+    },
   };
 
   const sizeStyles = {
@@ -46,9 +56,7 @@ export default function Button({
       "h-16 px-6 text-label-l max-sm:h-16 max-sm:px-5 max-sm:text-label-m",
   };
 
-  const classes = `${baseStyles} ${variantStyles[variant]} ${
-    sizeStyles[size]
-  } ${props.className ?? ""}`;
+  const classes = `${baseStyles} ${variantStyles[variant][color]} ${sizeStyles[size]} ${classNames}`;
 
   return (
     <button className={classes} {...props}>

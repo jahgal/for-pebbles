@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import type { Viewport } from "next";
 import localFont from "next/font/local";
+
+import Footer from "@shared/Footer";
+
 import "../styles/globals.css";
 
 export const metadata: Metadata = {
@@ -33,6 +36,7 @@ export default function RootLayout({
         {children}
         {modal}
         <div id="modal-root" />
+        <Footer />
       </body>
     </html>
   );

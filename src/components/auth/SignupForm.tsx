@@ -1,13 +1,18 @@
 "use client";
 
 import { useState, FormEvent } from "react";
+import { useRouter } from "next/navigation";
 
 import Button from "@shared/Button";
 import Input from "@shared/Input";
 import AccountPrompt from "@components/auth/AccountPrompt";
 import { emailRegex, passwordRegex } from "@utils/regex";
+import InputLabel from "@shared/InputLabel";
+import WarningMessage from "@shared/WarningMessage";
 
 export default function SignUpForm() {
+  const router = useRouter();
+
   const [email, setEmail] = useState("");
   const [nickName, setNickName] = useState("");
   const [password, setPassword] = useState("");
@@ -54,59 +59,80 @@ export default function SignUpForm() {
 
   return (
     <form onSubmit={handleSubmit} className="w-full flex flex-col gap-6">
-      <Input
-        type="email"
-        size="medium"
-        label="이메일 아이디"
-        placeholder="stonepick@email.com"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        onBlur={handleEmailBlur}
-        error={error.email.length > 0}
-        errorMessage={error.email}
-      />
-      <Input
-        type="text"
-        size="medium"
-        label="닉네임"
-        placeholder="닉네임을 입력해주세요."
-        value={nickName}
-        onChange={(e) => setNickName(e.target.value)}
-      />
-      <Input
-        type="password"
-        size="medium"
-        label="비밀번호"
-        placeholder="영문, 숫자, 특수문자 포함 8~15자"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        onBlur={handlePasswordBlur}
-        error={error.password.length > 0}
-        errorMessage={error.password}
-      />
-      <Input
-        type="password"
-        size="medium"
-        label="비밀번호 확인"
-        placeholder="******"
-        value={confrimPassword}
-        onChange={(e) => setConfrimPassword(e.target.value)}
-        error={error.confrim.length > 0}
-        errorMessage={error.confrim}
-        onBlur={handleConfirmBlur}
-      />
-
-      {error.result.length > 0 && (
-        <div className="text-red-500 text-label-m">{error.result}</div>
-      )}
-      <div>
-        <Button type="submit" size="medium">
+      <div className="flex flex-col gap-3">
+        <InputLabel text="이메일 아이디" />
+        <div className="flex gap-4 items-center">
+          <Input
+            type="email"
+            size="medium"
+            placeholder="stonepick@email.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            onBlur={handleEmailBlur}
+            error={error.email.length > 0}
+            classNames="flex-1"
+          />
+          <Button classNames="max-w-fit break-keep">
+            <span>중복확인</span>
+          </Button>
+        </div>
+        {error.email.length > 0 && (
+          <WarningMessage errorMessage={error.email} />
+        )}
+      </div>
+      <div className="flex flex-col gap-3">
+        <InputLabel text="닉네임" />
+        <Input
+          type="text"
+          size="medium"
+          placeholder="닉네임을 입력해주세요."
+          value={nickName}
+          onChange={(e) => setNickName(e.target.value)}
+        />
+      </div>
+      <div className="flex flex-col gap-3">
+        <InputLabel text="비밀번호" />
+        <Input
+          type="password"
+          size="medium"
+          placeholder="영문, 숫자, 특수문자 포함 8~15자"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          onBlur={handlePasswordBlur}
+          error={error.password.length > 0}
+        />
+        {error.password.length > 0 && (
+          <WarningMessage errorMessage={error.password} />
+        )}
+      </div>
+      <div className="flex flex-col gap-3">
+        <InputLabel text="비밀번호 확인" />
+        <Input
+          type="password"
+          size="medium"
+          placeholder="******"
+          value={confrimPassword}
+          onChange={(e) => setConfrimPassword(e.target.value)}
+          error={error.confrim.length > 0}
+          onBlur={handleConfirmBlur}
+        />
+        {error.confrim.length > 0 && (
+          <WarningMessage errorMessage={error.confrim} />
+        )}
+      </div>
+      <div className="flex flex-col gap-5">
+        <Button
+          type="submit"
+          size="medium"
+          disabled={error.result.length > 0}
+          onClick={() => router.push("/?modal=signupSuccess")}
+        >
           <span>회원가입</span>
         </Button>
         <AccountPrompt
           question="이미 계정이 있으신가요?"
           linkLable="로그인"
-          to="/auth/signin"
+          to="/signin"
         />
       </div>
     </form>

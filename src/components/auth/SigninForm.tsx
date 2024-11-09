@@ -6,10 +6,10 @@ import Button from "@shared/Button";
 import Input from "@shared/Input";
 import Divider from "@shared/Divider";
 import CheckBox from "@shared/CheckBox";
+import KakaoLoginButton from "@shared/KakaoLoginButton";
 import AccountPrompt from "@components/auth/AccountPrompt";
 import { emailRegex } from "@utils/regex";
-
-import KakaoLogo from "images/kakao-logo.svg";
+import InputLabel from "@shared/InputLabel";
 
 export default function SignInForm() {
   const [email, setEmail] = useState("");
@@ -37,37 +37,37 @@ export default function SignInForm() {
 
   return (
     <form onSubmit={handleSubmit} className="w-full">
-      <div className="flex flex-col gap-6">
-        <Input
-          type="email"
-          size="medium"
-          label="이메일 아이디"
-          placeholder="stonepick@email.com"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          onBlur={handleEmailBlur}
-          error={error.email.length > 0}
-          errorMessage={error.email}
-        />
-        <Input
-          type="password"
-          size="medium"
-          label="비밀번호"
-          placeholder="비밀번호를 입력해 주세요"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+      <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-3">
+          <InputLabel text="이메일 아이디" />
+          <Input
+            type="email"
+            size="medium"
+            placeholder="stonepick@email.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            onBlur={handleEmailBlur}
+            error={error.email.length > 0}
+          />
+        </div>
+        <div className="flex flex-col gap-3">
+          <InputLabel text="비밀번호" />
+          <Input
+            type="password"
+            size="medium"
+            placeholder="비밀번호를 입력해 주세요"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
       </div>
-      {error.result.length > 0 && (
-        <div className="text-red-500 text-label-m">{error.result}</div>
-      )}
-      <div className="mt-6 mb-9 flex justify-between">
+      <div className="my-10 flex justify-between">
         <CheckBox checked={auto} onChange={setAuto} label="자동 로그인" />
         <div className="text-gray-700 text-label-xs cursor-pointer">
           비밀번호 재설정
         </div>
       </div>
-      <div>
+      <div className="mb-10">
         <Button type="submit" size="medium">
           <span>로그인</span>
         </Button>
@@ -76,17 +76,12 @@ export default function SignInForm() {
           <span className="text-gray-300 px-4 break-keep">또는</span>
           <Divider />
         </div>
-        <Button type="submit" size="medium" variant="kakao">
-          <span className="flex items-center justify-center gap-1">
-            <KakaoLogo />
-            카카오 로그인
-          </span>
-        </Button>
+        <KakaoLoginButton />
       </div>
       <AccountPrompt
         question="계정이 없으신가요? 지금 바로 가입하세요!"
         linkLable="회원가입"
-        to="/auth/signup"
+        to="/signup"
       />
     </form>
   );
