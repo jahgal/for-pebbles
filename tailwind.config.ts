@@ -126,6 +126,12 @@ const config: Config = {
         "links-m": ["1.0625rem", { lineHeight: "150%" }],
         "links-s": ["0.9375rem", { lineHeight: "150%" }],
       },
+      width: {
+        thumbnail: "12.5rem",
+      },
+      height: {
+        thumbnail: "18.75rem",
+      },
     },
   },
   plugins: [],
