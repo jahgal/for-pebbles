@@ -1,21 +1,30 @@
 import React from "react";
+import { cva } from "class-variance-authority";
+
+import { cn } from "@utils";
 
 interface DividerProps {
   orientation?: "horizontal" | "vertical";
-  classNames?: string;
+  additionalClass?: string;
 }
+
+const dividerStyles = cva("bg-gray-300", {
+  variants: {
+    orientation: {
+      horizontal: "h-px w-full",
+      vertical: "w-px h-full",
+    },
+  },
+  defaultVariants: {
+    orientation: "horizontal",
+  },
+});
 
 export default function Divider({
   orientation = "horizontal",
-  classNames = "",
+  additionalClass,
 }: DividerProps) {
-  const baseStyles = "bg-gray-300";
-  const horizontalStyles = "h-px w-full";
-  const verticalStyles = "w-px h-full";
-
-  const classes = `${baseStyles} ${
-    orientation === "horizontal" ? horizontalStyles : verticalStyles
-  } ${classNames}`;
+  const classes = cn(dividerStyles({ orientation }), additionalClass);
 
   return <div className={classes} />;
 }

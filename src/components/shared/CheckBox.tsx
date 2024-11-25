@@ -1,17 +1,19 @@
 "use client";
 
+import { cn } from "@utils";
+
 interface CheckBoxProps {
   checked: boolean;
   onChange?: (checked: boolean) => void;
   label?: string;
-  classNames?: string;
+  additionalClass?: string;
 }
 
 export default function CheckBox({
   checked,
   onChange,
   label,
-  classNames = "",
+  additionalClass,
 }: CheckBoxProps) {
   const toggleCheckbox = () => {
     if (onChange) {
@@ -20,7 +22,7 @@ export default function CheckBox({
   };
 
   return (
-    <div className={`flex items-center gap-2 ${classNames}`}>
+    <div className={cn(`flex items-center gap-2`, additionalClass)}>
       <input
         type="checkbox"
         checked={checked}

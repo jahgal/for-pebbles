@@ -1,22 +1,54 @@
 "use client";
 
 import { ChangeEvent, useState } from "react";
+import { cva, VariantProps } from "class-variance-authority";
+
+import { cn } from "@utils";
 
 import EyeOpenIcon from "images/eye-solid.svg";
 import EyeClosedIcon from "images/eye-slash-solid.svg";
 
 interface InputProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size"> {
-  size: "small" | "medium" | "large";
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size" | "type">,
+    VariantProps<typeof inputVariants> {
   error?: boolean;
   hint?: string;
-  classNames?: string;
+  additionalClass?: string;
 }
+
+const inputVariants = cva(
+  "flex w-full px-4 items-center text-gray-900 placeholder:text-gray-400 disabled:bg-gray-100 disabled:text-gray-400 placeholder:text-label-s transition-all duration-300",
+  {
+    variants: {
+      size: {
+        small: "h-10 rounded-md text-body-s",
+        medium: "h-12 rounded-lg text-body-m",
+        large: "h-14 rounded-lg text-body-l",
+      },
+      error: {
+        true: "border-2 border-loveRed-500 focus:border-sparkPurple-500",
+        false:
+          "border border-gray-600 hover:border-sparkPurple-500 focus:border-sparkPurple-500 focus:border-2 disabled:hover:border-gray-600",
+      },
+      type: {
+        password: "pr-10",
+        text: "",
+        email: "",
+        number: "",
+      },
+    },
+    defaultVariants: {
+      size: "medium",
+      error: false,
+      type: "text",
+    },
+  }
+);
 
 export default function Input({
   size,
   onChange,
-  classNames = "",
+  additionalClass,
   error = false,
   type = "text",
   disabled = false,
@@ -34,27 +66,19 @@ export default function Input({
     setShowPassword((prev) => !prev);
   };
 
-  const baseStyles =
-    "flex w-full px-4 text-gray-900 placeholder:text-gray-400 disabled:bg-gray-100 disabled:text-gray-400 placeholder:text-label-s transition-all duration-300";
-
-  const sizeStyles = {
-    small: "h-10 rounded-md text-body-s",
-    medium: "h-12 rounded-lg text-body-m",
-    large: "h-14 rounded-lg text-body-l",
-  };
-
-  const borderStyles = error
-    ? "border-2 border-loveRed-500 focus:border-sparkPurple-500"
-    : "border border-gray-600 hover:border-sparkPurple-500 focus:border-sparkPurple-500 focus:border-2 disabled:hover:border-gray-600 ";
-
-  const classes = `${classNames} ${borderStyles} ${baseStyles} ${sizeStyles[size]} flex items-center`;
-
   return (
     <div className="relative w-full">
       <input
-        className={`${classes} ${type === "password" ? "pr-10" : ""}`}
+        className={cn(
+          inputVariants({
+            size,
+            error,
+            type,
+          }),
+          additionalClass
+        )}
         onChange={handleChange}
-        type={type === "password" && showPassword ? "text" : type}
+        type={type === "password" && showPassword ? "text" : type || undefined}
         {...props}
         disabled={disabled}
       />

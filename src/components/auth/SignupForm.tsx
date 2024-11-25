@@ -70,9 +70,9 @@ export default function SignUpForm() {
             onChange={(e) => setEmail(e.target.value)}
             onBlur={handleEmailBlur}
             error={error.email.length > 0}
-            classNames="flex-1"
+            additionalClass="flex-1"
           />
-          <Button classNames="max-w-fit break-keep">
+          <Button additionalClass="max-w-fit break-keep">
             <span>중복확인</span>
           </Button>
         </div>

@@ -68,7 +68,7 @@ export default function SignInForm() {
         </div>
       </div>
       <div className="mb-10">
-        <Button type="submit" size="medium">
+        <Button type="submit" size="medium" variant="contained" color="purple">
           <span>로그인</span>
         </Button>
         <div className="flex items-center cursor-default my-10 max-sm:my-8">
