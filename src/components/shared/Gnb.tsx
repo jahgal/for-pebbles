@@ -14,7 +14,7 @@ export default function Gnb() {
   ];
 
   return (
-    <GridLayout className="border-b border-b-gray-300">
+    <GridLayout additionalClass="border-b border-b-gray-300">
       <div className="col-start-2 w-full flex h-16 items-center gap-4">
         {categories.map((category) => (
           <Tab
