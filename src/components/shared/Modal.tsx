@@ -1,18 +1,20 @@
 "use client";
 
-import { type ElementRef, useEffect, useRef } from "react";
+import { type ElementRef, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 export default function Modal({ children }: { children: React.ReactNode }) {
+  const [isClient, setIsClient] = useState(false);
   const dialogRef = useRef<ElementRef<"dialog">>(null);
 
   useEffect(() => {
-    if (typeof window !== "undefined" && !dialogRef.current?.open) {
-      dialogRef.current?.showModal();
+    setIsClient(true);
+    if (dialogRef.current && !dialogRef.current.open) {
+      dialogRef.current.showModal();
     }
   }, []);
 
-  if (typeof window === "undefined") {
+  if (!isClient) {
     return null;
   }
 

@@ -34,33 +34,95 @@ const buttonVariants = cva(
       },
       color: {
         purple:
-          "text-sparkPurple-500 border-sparkPurple-500 hover:bg-sparkPurple-50",
-        red: "text-loveRed-500 border-loveRed-500 hover:bg-loveRed-50",
+          "text-sparkPurple-500 border-sparkPurple-500 hover:bg-sparkPurple-700 active:bg-sparkPurple-900 disabled:bg-gray-400",
+        red: "text-loveRed-500 border-loveRed-500 hover:bg-loveRed-700 active:bg-loveRed-900 disabled:bg-gray-400",
         orange:
-          "text-happyOrange-500 border-happyOrange-500 hover:bg-happyOrange-50",
-        blue: "text-coolBlue-500 border-coolBlue-500 hover:bg-coolBlue-50",
+          "text-happyOrange-500 border-happyOrange-500 hover:bg-happyOrange-700 active:bg-happyOrange-900 disabled:bg-gray-400",
+        blue: "text-coolBlue-500 border-coolBlue-500 hover:bg-coolBlue-700 active:bg-coolBlue-900 disabled:bg-gray-400",
+        black:
+          "text-gray-950 border-gray-950 hover:bg-gray-700 active:bg-gray-900 disabled:bg-gray-400",
       },
     },
     compoundVariants: [
+      // Contained variants
       {
         variant: "contained",
         color: "purple",
-        className: "bg-sparkPurple-500 hover:bg-sparkPurple-600 text-white",
+        className: "bg-sparkPurple-500 text-white",
       },
       {
         variant: "contained",
         color: "red",
-        className: "bg-loveRed-500 hover:bg-loveRed-600 text-white",
+        className: "bg-loveRed-500 text-white",
       },
       {
         variant: "contained",
         color: "orange",
-        className: "bg-happyOrange-500 hover:bg-happyOrange-600 text-white",
+        className: "bg-happyOrange-500  text-white",
       },
       {
         variant: "contained",
         color: "blue",
-        className: "bg-coolBlue-500 hover:bg-coolBlue-600 text-white",
+        className: "bg-coolBlue-500  text-white",
+      },
+      {
+        variant: "contained",
+        color: "black",
+        className: "bg-gray-950 text-white",
+      },
+      // Outlined variants
+      {
+        variant: "outlined",
+        color: "purple",
+        className:
+          "border-sparkPurple-500 text-sparkPurple-500 hover:bg-sparkPurple-50",
+      },
+      {
+        variant: "outlined",
+        color: "red",
+        className: "border-loveRed-500 text-loveRed-500 hover:bg-loveRed-50",
+      },
+      {
+        variant: "outlined",
+        color: "orange",
+        className:
+          "border-happyOrange-500 text-happyOrange-500 hover:bg-happyOrange-50",
+      },
+      {
+        variant: "outlined",
+        color: "blue",
+        className: "border-coolBlue-500 text-coolBlue-500 hover:bg-coolBlue-50",
+      },
+      {
+        variant: "outlined",
+        color: "black",
+        className: "border-gray-950 text-gray-950 hover:bg-gray-300",
+      },
+      // Text variants
+      {
+        variant: "text",
+        color: "purple",
+        className: "text-sparkPurple-500 hover:bg-sparkPurple-50",
+      },
+      {
+        variant: "text",
+        color: "red",
+        className: "text-loveRed-500 hover:bg-loveRed-50",
+      },
+      {
+        variant: "text",
+        color: "orange",
+        className: "text-happyOrange-500 hover:bg-happyOrange-50",
+      },
+      {
+        variant: "text",
+        color: "blue",
+        className: "text-coolBlue-500 hover:bg-coolBlue-50",
+      },
+      {
+        variant: "text",
+        color: "black",
+        className: "text-gray-950 hover:bg-gray-300",
       },
     ],
     defaultVariants: {

@@ -1,25 +1,26 @@
 "use client";
 
-import { useState, FormEvent } from "react";
+import { useState, FormEvent, useMemo } from "react";
 import { useRouter } from "next/navigation";
 
+import { signUpAction, checkEmailAction } from "@actions/auth";
 import Button from "@shared/Button";
 import Input from "@shared/Input";
-import AccountPrompt from "@components/auth/AccountPrompt";
-import { emailRegex, passwordRegex } from "@utils/regex";
 import InputLabel from "@shared/InputLabel";
 import WarningMessage from "@shared/WarningMessage";
+import AccountPrompt from "@components/auth/AccountPrompt";
+import { emailRegex, passwordRegex } from "@utils/regex";
 
 export default function SignUpForm() {
   const router = useRouter();
 
   const [email, setEmail] = useState("");
-  const [nickName, setNickName] = useState("");
+  const [nickname, setNickName] = useState("");
   const [password, setPassword] = useState("");
-  const [confrimPassword, setConfrimPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState({
     email: "",
-    nickName: "",
+    nickname: "",
     password: "",
     confrim: "",
     result: "",
@@ -27,10 +28,60 @@ export default function SignUpForm() {
 
   const isValidEmail = (email: string) => emailRegex.test(email);
   const isValidPassword = (password: string) => passwordRegex.test(password);
+  const isSubmitDisabled = useMemo(() => {
+    return (
+      error.email.length !== 0 ||
+      error.nickname.length !== 0 ||
+      error.password.length !== 0 ||
+      error.confrim.length !== 0 ||
+      [email, nickname, password, confirmPassword].includes("")
+    );
+  }, [error, email, nickname, password, confirmPassword]);
+
+  const handleCheckEmail = async () => {
+    if (!email) {
+      setError({
+        email: "",
+        nickname: "",
+        password: "",
+        confrim: "",
+        result: "",
+      });
+      return;
+    }
+
+    const res = await checkEmailAction({ email });
+
+    if (res?.success) {
+      return;
+    }
+    setError((prev) => ({
+      ...prev,
+      email: res?.message ?? "사용할 수 없는 이메일입니다.",
+    }));
+  };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    console.log(email, password);
+
+    if (!password) {
+      setError((prev) => ({ ...prev, password: "비밀번호를 입력해 주세요." }));
+      return;
+    }
+
+    const res = await signUpAction({ email, password, nickname });
+
+    if (res.success) {
+      setError({
+        email: "",
+        nickname: "",
+        password: "",
+        confrim: "",
+        result: "",
+      });
+      return router.push("/?modal=signupSuccess");
+    }
+    setError((prev) => ({ ...prev, result: res.message }));
   };
 
   const handleEmailBlur = () => {
@@ -53,7 +104,7 @@ export default function SignUpForm() {
     setError((prev) => ({
       ...prev,
       confrim:
-        password !== confrimPassword ? "비밀번호가 일치하지 않습니다." : "",
+        password !== confirmPassword ? "비밀번호가 일치하지 않습니다." : "",
     }));
   };
 
@@ -72,7 +123,11 @@ export default function SignUpForm() {
             error={error.email.length > 0}
             additionalClass="flex-1"
           />
-          <Button additionalClass="max-w-fit break-keep">
+          <Button
+            additionalClass="max-w-fit break-keep"
+            onClick={handleCheckEmail}
+            disabled={!isValidEmail(email)}
+          >
             <span>중복확인</span>
           </Button>
         </div>
@@ -86,7 +141,7 @@ export default function SignUpForm() {
           type="text"
           size="medium"
           placeholder="닉네임을 입력해주세요."
-          value={nickName}
+          value={nickname}
           onChange={(e) => setNickName(e.target.value)}
         />
       </div>
@@ -111,8 +166,16 @@ export default function SignUpForm() {
           type="password"
           size="medium"
           placeholder="******"
-          value={confrimPassword}
-          onChange={(e) => setConfrimPassword(e.target.value)}
+          value={confirmPassword}
+          onChange={(e) => {
+            const { value } = e.target;
+            setConfirmPassword(e.target.value);
+            setError((prev) => ({
+              ...prev,
+              confrim:
+                password !== value ? "비밀번호가 일치하지 않습니다." : "",
+            }));
+          }}
           error={error.confrim.length > 0}
           onBlur={handleConfirmBlur}
         />
@@ -121,12 +184,7 @@ export default function SignUpForm() {
         )}
       </div>
       <div className="flex flex-col gap-5">
-        <Button
-          type="submit"
-          size="medium"
-          disabled={error.result.length > 0}
-          onClick={() => router.push("/?modal=signupSuccess")}
-        >
+        <Button type="submit" size="medium" disabled={isSubmitDisabled}>
           <span>회원가입</span>
         </Button>
         <AccountPrompt

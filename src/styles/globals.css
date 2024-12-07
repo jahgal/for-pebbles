@@ -18,3 +18,13 @@ input {
     text-wrap: balance;
   }
 }
+
+.swiper-button-prev,
+.swiper-button-next {
+  @apply py-12 px-28 text-white;
+}
+
+.swiper-button-prev::after,
+.swiper-button-next::after {
+  @apply text-7xl opacity-70;
+}
