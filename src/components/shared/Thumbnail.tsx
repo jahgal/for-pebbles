@@ -7,9 +7,9 @@
 //   rate?: number;
 // }
 
-export default function Thumbnail() {
+export default function Thumbnail({ onClick }: { onClick: () => void }) {
   return (
-    <div>
+    <div onClick={onClick} className="cursor-pointer">
       <div className="h-thumbnail bg-gray-300 rounded-lg mb-6" />
       <div className="text-gray-900 text-body-l mb-4 font-bold">
         웹소설 제목
