@@ -109,14 +109,14 @@ export default function SearchBar() {
           <MagnifyingGlass className="w-6 h-6" />
         </div>
       </div>
-      {isOpen && items.length > 0 && (
+      {isOpen && (
         <div className="mt-2 border rounded border-gray-300 w-80 bg-white flex flex-col justify-center absolute shadow-md">
           <div className="p-2">
             <div className="w-full text-gray-900 text-label-m px-4 py-3 border-b-2 border-black">
               최근 검색어
             </div>
           </div>
-          <div>
+          <div className="min-h-20">
             {items.map(({ keyword, date }, index) => (
               <div
                 key={keyword}

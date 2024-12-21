@@ -17,10 +17,12 @@
     "dayjs": "^1.11.13",
     "lodash": "^4.17.21",
     "next": "15.0.3",
+    "pnpm": "^9.15.1",
     "react": "^18",
     "react-dom": "^18",
     "swiper": "^11.1.15",
-    "tailwind-merge": "^2.5.5"
+    "tailwind-merge": "^2.5.5",
+    "zustand": "^5.0.2"
   },
   "devDependencies": {
     "@types/lodash": "^4.17.13",

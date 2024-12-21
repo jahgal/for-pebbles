@@ -76,6 +76,7 @@ const config: Config = {
         },
       },
       fontFamily: {
+        sans: ["var(--font-pretendard)"],
         pretendard: "var(--font-pretendard)",
       },
       fontSize: {

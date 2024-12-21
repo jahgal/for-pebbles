@@ -1,13 +1,9 @@
 "use server";
 
-import https from "https";
-import axios, { AxiosError, AxiosResponse } from "axios";
-import { cookies } from "next/headers";
+import axios, { AxiosError, AxiosResponse, HttpStatusCode } from "axios";
 
 import { EmailVerifyRes, SignInRes, SignUpRes } from "@models/auth";
-
-const agent = new https.Agent({ rejectUnauthorized: false });
-const BASE_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/users`;
+import apiClient from "@actions/apiClient";
 
 export async function signInAction({
   email,
@@ -17,44 +13,28 @@ export async function signInAction({
   password: string;
 }) {
   try {
-    const response: AxiosResponse<SignInRes> = await axios.post(
-      `${BASE_URL}/sign-in`,
+    const response: AxiosResponse<SignInRes> = await apiClient.post(
+      "/users/sign-in",
       {
         email,
         password,
-      },
-      {
-        headers: {
-          Accept: "*/*",
-        },
-        httpsAgent: agent,
       }
     );
 
     const { status, data, message } = response.data;
 
-    if (status === 200 && data) {
+    if (status == HttpStatusCode.Ok && data) {
       const { token, user } = data;
 
       if (!token || !user) {
         throw new Error("서버 응답에 토큰 또는 사용자 정보가 없습니다.");
       }
 
-      (await cookies()).set({
-        name: "authToken",
-        value: token,
-        httpOnly: true,
-        secure: true,
-        path: "/",
-        maxAge: 60 * 60 * 24,
-      });
-
       return { success: true, token, user, message };
     }
 
     throw new Error(message || "로그인에 실패했습니다.");
   } catch (error: unknown) {
-    console.log(error);
     if (axios.isAxiosError(error)) {
       const axiosError = error as AxiosError<SignInRes>;
       const serverMessage = axiosError.response?.data?.message;
@@ -82,27 +62,20 @@ export async function signUpAction({
   nickname: string;
 }) {
   try {
-    const response: AxiosResponse<SignUpRes> = await axios.post(
-      `${BASE_URL}/sign-up`,
+    const response: AxiosResponse<SignUpRes> = await apiClient.post(
+      "/users/sign-up",
       {
         email,
         password,
         nickname,
-      },
-      {
-        headers: {
-          Accept: "*/*",
-        },
-        httpsAgent: agent,
       }
     );
 
     const { status, data, message } = response.data;
 
-    if (status === 200 && data) {
+    if (status == HttpStatusCode.Ok && data) {
       return { success: true, message };
     }
-
     throw new Error(message || "회원가입에 실패했습니다.");
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {
@@ -124,25 +97,20 @@ export async function signUpAction({
 
 export async function checkEmailAction({ email }: { email: string }) {
   try {
-    const response: AxiosResponse<EmailVerifyRes> = await axios.post(
-      `${BASE_URL}/email/verify`,
-      { email },
-      {
-        httpsAgent: agent,
-        headers: {
-          Accept: "*/*",
-        },
-      }
+    const response: AxiosResponse<EmailVerifyRes> = await apiClient.post(
+      "/users/email/verify",
+      { email }
     );
 
     const { status, data, message } = response.data;
 
-    if (status === 200 && data) {
+    if (status == HttpStatusCode.Ok && data) {
       if (data.isExistEmail) {
-        return { success: true, message };
+        return { success: false, message };
       }
-      return { success: false, message };
+      return { success: true, message };
     }
+    throw Error();
   } catch (e) {
     console.error(e);
     return {

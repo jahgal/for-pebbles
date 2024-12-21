@@ -10,12 +10,14 @@ import Divider from "@shared/Divider";
 import CheckBox from "@shared/CheckBox";
 import KakaoLoginButton from "@shared/KakaoLoginButton";
 import InputLabel from "@shared/InputLabel";
-import WarningMessage from "@shared/WarningMessage";
+import HelpText from "@shared/HelpText";
 import AccountPrompt from "@components/auth/AccountPrompt";
+import useAuth from "@components/auth/hooks/useAuth";
 import { emailRegex } from "@utils/regex";
 
 export default function SignInForm() {
   const router = useRouter();
+  const { setToken } = useAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -50,13 +52,14 @@ export default function SignInForm() {
       return;
     }
 
-    const result = await signInAction({ email, password });
+    const { success, token, message } = await signInAction({ email, password });
 
-    if (result.success) {
+    if (success && token) {
+      setToken(token);
       setError({ email: "", password: "", result: "" });
       return router.push("/");
     }
-    setError((prev) => ({ ...prev, result: result.message }));
+    setError((prev) => ({ ...prev, result: message }));
   };
 
   return (
@@ -73,7 +76,7 @@ export default function SignInForm() {
             onBlur={handleEmailBlur}
             error={error.email.length > 0}
           />
-          {error.email && <WarningMessage errorMessage={error.email} />}
+          {error.email && <HelpText type="warning" message={error.email} />}
         </div>
         <div className="flex flex-col gap-3">
           <InputLabel text="비밀번호" />
@@ -84,7 +87,9 @@ export default function SignInForm() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          {error.password && <WarningMessage errorMessage={error.password} />}
+          {error.password && (
+            <HelpText type="warning" message={error.password} />
+          )}
         </div>
       </div>
       <div className="my-4 flex justify-between">
@@ -94,9 +99,11 @@ export default function SignInForm() {
         </div>
       </div>
       {error.result && (
-        <pre className="text-loveRed-500 text-detail-s mb-8">
-          {error.result}
-        </pre>
+        <HelpText
+          type="warning"
+          message={error.result}
+          additionalClass="mb-8"
+        />
       )}
       <div className="mb-10">
         <Button
